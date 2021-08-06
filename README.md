@@ -41,4 +41,7 @@ Things to highlight in the demo -
 * End to end lineage
     * View of the trial component from the model in the Model Registry
     * Lineage from the Endpoint to the Model Package Group and Version
+* Pipelines integration with Experiments
+* Debugging a Pipeline through the DAG view
+* CI/CD for automatic training and deployment
 
