@@ -28,9 +28,17 @@ This repository contains 2 folders -
 * Trigger the pipeline by pushing the new code to the CodeCommit/Git repo (depending on the template selected)
 * Once the pipeline has completed, find the model package group in the Model Registry and find the ARN of the model package created in the group
 * Approve the model in the model registry, this will trigger the model deployment pipeline, you should see an endpoint being created in SageMaker
+* This endpoint will have the suffix `-staging`. You can navigate to CodePipeline, and under Pipelines you will see one with your project name and `model-deploy`. Click on that Pipeline and you will see a manual approval option. When approved, a new endpoint will be created with the suffix `-prod`. 
+* These endpoints are created by the default seed code in the 1st party template and do not have Data Capture enabled. 
 
-Setup Model Monitor
+To setup Model Monitor
 * Navigate to `model-monitor/create_endpoint.ipynb` to create an endpoint with DataCapture enabled
 * Run `model-monitor/data_quality_monitor.ipynb` to set up a Data Quality Monitoring schedule on the endpoint. 
 
+Once all the Endpoints have been created, navigate to the Endpoint UI in SageMaker Studio. Click on the endpoint deployed using the notebook in the model monitor folder, 
+
+Things to highlight in the demo -
+* End to end lineage
+    * View of the trial component from the model in the Model Registry
+    * Lineage from the Endpoint to the Model Package Group and Version
 
