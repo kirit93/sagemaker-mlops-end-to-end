@@ -14,6 +14,14 @@ For more information on SageMaker Projects, visit the AWS [documentation](https:
 
 Once the project is created, you will see 2 repositories created - one for the model building code and one for the model deployment code. The model deployment code will remain untouched, the model building code will be changed by replacing `pipelines/abalone/` with the code from this repo under `sagemaker-pipeline/`
 
+### DataWrangler and Feature Store Setup
+
+* Upload `datawrangler/abalone-dataset-header.csv` to S3 and note the S3 URI
+* Replace the S3 URI in line 19 of `datawrangler/fs-ingest-wrangler-training-template.flow` with the S3 URI you uploaded the dataset to in the step above
+* Uplaod this `.flow` file to SageMaker Studio and open it. This will open up the DataWrangler UI. 
+* On the DW UI, click on `Export Step` and select `Feature Store`. This will generate a notebook. 
+* Run the code in the notebook generated to ingest features in to Feature Store. 
+
 ### Repository Structure
 
 This repository contains 2 folders -
@@ -24,7 +32,16 @@ This repository contains 2 folders -
 
 ### Demo Setup
 
-* Navigate to the model build repo created by the SageMaker Project, replace the code in `pipelines/abalone/` with the code in `sagemaker-pipeline/`. 
+#### End to End Pipeline with Feature Store integration
+* If using Feature Store, the first step of the Pipeline will need to read data from Feature Store. 
+* In the file `sagemaker-pipeline/pipeline-dw-fs.py` lines 131 to 178 need to be replaced with the code in the notebook created by the DataWrangler Export. 
+* The first step of the Pipeline will be `step_read_train`
+* Replace the first step in `sagemaker-pipeline/pipeline.py` with `step_read_train` and `step_process` from `sagemaker-pipeline/pipeline-dw-fs.py`. 
+
+IF NOT USING FEATURE STORE, IGNORE THE STEPS ABOVE AND FOLLOW THE BELOW STEPS. 
+
+* Navigate to the model build repo created by the SageMaker Project, replace 
+the code in `pipelines/abalone/` with the code in `sagemaker-pipeline/`. 
 * Trigger the pipeline by pushing the new code to the CodeCommit/Git repo (depending on the template selected)
 * Once the pipeline has completed, find the model package group in the Model Registry and find the ARN of the model package created in the group
 * Approve the model in the model registry, this will trigger the model deployment pipeline, you should see an endpoint being created in SageMaker
