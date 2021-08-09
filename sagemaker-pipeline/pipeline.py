@@ -418,7 +418,7 @@ def get_pipeline(
             processed_data_path,
             input_data,
         ],
-        steps=[step_read_train, step_process, step_train, step_create_model, step_clarify_config, step_clarify, step_eval, step_cond],
+        steps=[step_process, step_train, step_create_model, step_clarify_config, step_clarify, step_eval, step_cond],
         sagemaker_session=sagemaker_session,
         pipeline_experiment_config=PipelineExperimentConfig(
           ExecutionVariables.PIPELINE_NAME,
